@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ConstructionDBModelStoreContainer" CdmEntityContainer="ConstructionDbContext">
+    <EntitySetMapping Name="Equipments">
+      <EntityTypeMapping TypeName="ConstructionDBModel.Equipment">
+        <MappingFragment StoreEntitySet="Equipments">
+          <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+          <ScalarProperty Name="EquipmentName" ColumnName="EquipmentName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectEquipments">
+      <EntityTypeMapping TypeName="ConstructionDBModel.ProjectEquipment">
+        <MappingFragment StoreEntitySet="ProjectEquipments">
+          <ScalarProperty Name="ProjectEquipmentID" ColumnName="ProjectEquipmentID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="ConstructionDBModel.Project">
+        <MappingFragment StoreEntitySet="Projects">
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EstimateEndDate" ColumnName="EstimateEndDate" />
+          <ScalarProperty Name="EstimatedDays" ColumnName="EstimatedDays" />
+          <ScalarProperty Name="ProjectDocuments" ColumnName="ProjectDocuments" />
+          <ScalarProperty Name="WorkInProgress" ColumnName="WorkInProgress" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

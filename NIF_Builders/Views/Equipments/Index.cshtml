@@ -1,0 +1,67 @@
+﻿@model IEnumerable<NIF_Builders.Models.Equipment>
+
+@{
+    ViewBag.Title = "Equipment Fleet";
+}
+
+<div class="row mt-4">
+    <div class="col-12 text-center mb-4">
+        <h2 class="display-5 fw-bold">🚜 Equipment Fleet</h2>
+        <p class="text-muted">Manage your master inventory of heavy machinery and construction assets.</p>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm border-0" style="border-top: 5px solid #ffc107;">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                <h4 class="mb-0">Asset Inventory</h4>
+                <a href="@Url.Action("Create")" class="btn btn-warning fw-bold text-dark btn-sm">
+                    ➕ Add New Machinery
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0 align-middle">
+                        <thead class="bg-light text-secondary">
+                            <tr>
+                                <th class="ps-4" style="width: 15%;">Asset ID</th>
+                                <th>@Html.DisplayNameFor(model => model.EquipmentName)</th>
+                                <th class="text-end pe-4" style="width: 30%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="ps-4 text-muted fw-bold">
+                                            #@Html.DisplayFor(modelItem => item.EquipmentID)
+                                        </td>
+                                        <td class="fw-bold" style="font-size: 1.1rem;">
+                                            @Html.DisplayFor(modelItem => item.EquipmentName)
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <div class="btn-group" role="group" aria-label="Equipment Actions">
+                                                <a href="@Url.Action("Edit", new { id = item.EquipmentID })" class="btn btn-sm btn-outline-dark fw-bold">✏️ Edit</a>
+                                                <a href="@Url.Action("Details", new { id = item.EquipmentID })" class="btn btn-sm btn-outline-info fw-bold">📄 Details</a>
+                                                <a href="@Url.Action("Delete", new { id = item.EquipmentID })" class="btn btn-sm btn-outline-danger fw-bold">❌ Delete</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center py-5 text-muted">
+                                        <em>No equipment currently registered in the fleet inventory. <br /> Click "Add New Machinery" to get started.</em>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

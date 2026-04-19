@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ConstructionDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Equipment">
+    <Key>
+      <PropertyRef Name="EquipmentID" />
+    </Key>
+    <Property Name="EquipmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EquipmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ProjectEquipments" Relationship="Self.FK__ProjectEq__Equip__4F7CD00D" FromRole="Equipments" ToRole="ProjectEquipments" />
+  </EntityType>
+  <EntityType Name="ProjectEquipment">
+    <Key>
+      <PropertyRef Name="ProjectEquipmentID" />
+    </Key>
+    <Property Name="ProjectEquipmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectID" Type="Int32" Nullable="false" />
+    <Property Name="EquipmentID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Equipment" Relationship="Self.FK__ProjectEq__Equip__4F7CD00D" FromRole="ProjectEquipments" ToRole="Equipments" />
+    <NavigationProperty Name="Project" Relationship="Self.FK__ProjectEq__Proje__4E88ABD4" FromRole="ProjectEquipments" ToRole="Projects" />
+  </EntityType>
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="ProjectID" />
+    </Key>
+    <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EstimateEndDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EstimatedDays" Type="Int32" Nullable="false" />
+    <Property Name="ProjectDocuments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="WorkInProgress" Type="Boolean" />
+    <NavigationProperty Name="ProjectEquipments" Relationship="Self.FK__ProjectEq__Proje__4E88ABD4" FromRole="Projects" ToRole="ProjectEquipments" />
+  </EntityType>
+  <Association Name="FK__ProjectEq__Equip__4F7CD00D">
+    <End Role="Equipments" Type="Self.Equipment" Multiplicity="1" />
+    <End Role="ProjectEquipments" Type="Self.ProjectEquipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Equipments">
+        <PropertyRef Name="EquipmentID" />
+      </Principal>
+      <Dependent Role="ProjectEquipments">
+        <PropertyRef Name="EquipmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectEq__Proje__4E88ABD4">
+    <End Role="Projects" Type="Self.Project" Multiplicity="1" />
+    <End Role="ProjectEquipments" Type="Self.ProjectEquipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="ProjectID" />
+      </Principal>
+      <Dependent Role="ProjectEquipments">
+        <PropertyRef Name="ProjectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ConstructionDbContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Equipments" EntityType="Self.Equipment" />
+    <EntitySet Name="ProjectEquipments" EntityType="Self.ProjectEquipment" />
+    <EntitySet Name="Projects" EntityType="Self.Project" />
+    <AssociationSet Name="FK__ProjectEq__Equip__4F7CD00D" Association="Self.FK__ProjectEq__Equip__4F7CD00D">
+      <End Role="Equipments" EntitySet="Equipments" />
+      <End Role="ProjectEquipments" EntitySet="ProjectEquipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectEq__Proje__4E88ABD4" Association="Self.FK__ProjectEq__Proje__4E88ABD4">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectEquipments" EntitySet="ProjectEquipments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

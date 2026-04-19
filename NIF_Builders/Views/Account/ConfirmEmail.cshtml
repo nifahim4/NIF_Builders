@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Email Confirmed";
+}
+
+<main aria-labelledby="title" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 text-center">
+
+            <div class="card shadow-sm border-0" style="border-top: 5px solid #ffc107;">
+                <div class="card-body bg-light p-5">
+
+                    <div class="mb-3">
+                        <span style="font-size: 3rem;">✅</span>
+                    </div>
+                    <h2 id="title" class="fw-bold mb-3 text-dark">Email Verified!</h2>
+
+                    <div class="alert alert-success shadow-sm border-success mb-4">
+                        <strong>Identity Confirmed:</strong> Your email address has been successfully validated.
+                    </div>
+
+                    <p class="text-muted mb-4 fs-5">
+                        Your NIF Builders portal account is now fully active. You can proceed to log in to view your project assignments and manage fleet equipment.
+                    </p>
+
+                    <div class="d-grid mt-4">
+                        @Html.ActionLink("Log In to Portal ➡️", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-dark btn-lg fw-bold border-warning shadow-sm", style = "border-width: 2px;" })
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>

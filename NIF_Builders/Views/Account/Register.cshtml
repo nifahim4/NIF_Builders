@@ -1,0 +1,76 @@
+﻿@model NIF_Builders.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Portal Registration";
+}
+
+<main aria-labelledby="title" class="container mt-4">
+    <div class="row mb-4 text-center">
+        <div class="col-12">
+            <h2 id="title" class="display-5 fw-bold text-dark">📝 Portal Registration</h2>
+            <p class="text-muted fs-5">Request access to the NIF Builders management system.</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 h-100" style="border-top: 5px solid #ffc107;">
+                <div class="card-header bg-dark text-white py-3">
+                    <h4 class="mb-0">👷 Create Corporate Account</h4>
+                </div>
+
+                <div class="card-body bg-light p-4">
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "Please fix the following errors:", new { @class = "alert alert-danger shadow-sm border-danger" })
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Email, "Corporate Email", new { @class = "form-label fw-bold text-dark" })
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-warning text-dark border-warning" title="Email">✉️</span>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control border-warning shadow-none", placeholder = "name@nifbuilders.com" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small mt-1 fw-bold d-block" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Password, new { @class = "form-label fw-bold text-dark" })
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-warning text-dark border-warning" title="Password">🔑</span>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control border-warning shadow-none", placeholder = "Create a strong password" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small mt-1 fw-bold d-block" })
+                        </div>
+
+                        <div class="mb-4">
+                            @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password", new { @class = "form-label fw-bold text-dark" })
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-warning text-dark border-warning" title="Confirm Password">🔐</span>
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control border-warning shadow-none", placeholder = "Re-enter password" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger small mt-1 fw-bold d-block" })
+                        </div>
+
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-warning btn-lg fw-bold text-dark shadow-sm" style="border: 2px solid #343a40;">
+                                📝 Register Account
+                            </button>
+                        </div>
+
+                        <hr class="text-secondary" />
+
+                        <div class="text-center mt-3">
+                            <p class="text-muted mb-1 small">Already have network access?</p>
+                            @Html.ActionLink("Back to Login", "Login", null, new { @class = "btn btn-sm btn-outline-dark fw-bold" })
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

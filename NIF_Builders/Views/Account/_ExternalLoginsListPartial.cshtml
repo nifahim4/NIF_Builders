@@ -1,0 +1,43 @@
+﻿@model NIF_Builders.Models.ExternalLoginListViewModel
+@using Microsoft.Owin.Security
+
+<div class="card shadow-sm border-0 h-100" style="border-top: 5px solid #343a40;">
+    <div class="card-body bg-light p-4">
+        <h4 class="fw-bold mb-3 text-dark">🏢 Corporate Sign-In</h4>
+        <hr class="text-secondary mb-4" />
+
+        @{
+            var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+
+            if (loginProviders.Count() == 0)
+            {
+                <div class="alert alert-secondary border-secondary text-center shadow-sm">
+                    <p class="mb-2 fw-bold text-dark">No External Portals Configured</p>
+                    <small class="text-muted d-block">
+                        Partner and corporate authentication services (e.g., Microsoft Entra ID, Google Workspace) are not currently linked to the NIF Builders network.
+                    </small>
+                    <small class="text-muted mt-2 d-block">
+                        See <a href="https://go.microsoft.com/fwlink/?LinkId=403804" class="text-decoration-none fw-bold" style="color: #d39e00;">IT Documentation</a> for configuration details.
+                    </small>
+                </div>
+            }
+            else
+            {
+                using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div id="socialLoginList" class="d-grid gap-3">
+                        <p class="text-muted small text-center mb-1">Authenticate using your partner or corporate network account:</p>
+
+                        @foreach (AuthenticationDescription p in loginProviders)
+                        {
+                            <button type="submit" class="btn btn-dark fw-bold border-warning py-2 shadow-sm d-flex justify-content-center align-items-center" style="border-width: 2px;" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">
+                                <span class="me-2">🔐</span> Continue with @p.AuthenticationType
+                            </button>
+                        }
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>

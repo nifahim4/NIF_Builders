@@ -1,0 +1,83 @@
+﻿@model NIF_Builders.Models.Equipment
+
+@{
+    ViewBag.Title = "Machinery Details";
+}
+
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-10 col-lg-8">
+
+        <div class="text-center mb-4">
+            <h2 class="display-5 fw-bold">📄 Asset Details</h2>
+            <p class="text-muted">Review machinery information and active project assignments.</p>
+        </div>
+
+        <div class="card shadow-sm border-0" style="border-top: 5px solid #ffc107;">
+            <div class="card-header bg-dark text-white py-3 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">🚜 Equipment Specs</h4>
+                <span class="badge bg-warning text-dark fs-6 px-3 py-2 border border-dark">Asset #@Model.EquipmentID</span>
+            </div>
+
+            <div class="card-body bg-light p-4">
+
+                <div class="row mb-5">
+                    <div class="col-12 p-4 bg-white border rounded shadow-sm text-center">
+                        <span class="text-muted fw-bold d-block mb-2 text-uppercase" style="letter-spacing: 1px;">Machinery Name / Model</span>
+                        <span class="display-6 fw-bold text-dark">@Html.DisplayFor(model => model.EquipmentName)</span>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-3 border-bottom border-warning pb-2">🏗️ Current Project Assignments</h5>
+
+                @if (Model.ProjectEquipments != null && Model.ProjectEquipments.Any())
+                {
+                    <div class="table-responsive shadow-sm rounded mb-4">
+                        <table class="table table-bordered table-hover mb-0 bg-white align-middle">
+                            <thead class="bg-secondary text-white">
+                                <tr>
+                                    <th class="ps-3" style="width: 20%;">Project ID</th>
+                                    <th>Project Name</th>
+                                    <th class="text-center" style="width: 25%;">Quick Link</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var assignment in Model.ProjectEquipments)
+                                {
+                                    <tr>
+                                        <td class="ps-3 fw-bold text-muted">#@assignment.ProjectID</td>
+                                        <td class="fw-bold">@assignment.Project.ProjectName</td>
+                                        <td class="text-center">
+                                            <a href="@Url.Action("Edit", "Projects", new { id = assignment.ProjectID })" class="btn btn-sm btn-outline-dark">
+                                                View Project
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info shadow-sm border-info text-center mb-4 py-3">
+                        <span class="fs-5 d-block mb-1">🟢 <strong>Available for Dispatch</strong></span>
+                        <span class="text-muted">This asset is not currently assigned to any active construction sites. It is sitting in the yard and ready for deployment.</span>
+                    </div>
+                }
+
+                <hr class="text-secondary my-4" />
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary fw-bold px-4">
+                        ⬅️ Back to Fleet
+                    </a>
+                    <a href="@Url.Action("Edit", new { id = Model.EquipmentID })" class="btn btn-dark fw-bold px-4 border-warning" style="border-width: 2px;">
+                        ✏️ Edit Asset
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

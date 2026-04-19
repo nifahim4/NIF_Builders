@@ -1,0 +1,139 @@
+﻿@model NIF_Builders.Models.ViewModels.ProjectVM
+@{
+    ViewBag.Title = "Create Project";
+}
+
+<div class="row mt-4">
+    <div class="col-12 text-center mb-4">
+        <h2 class="display-5 fw-bold">🏗️ Add New Project</h2>
+        <p class="text-muted">Register a new construction site and allocate necessary machinery.</p>
+    </div>
+
+    <div class="col-12">
+        @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "msg", OnComplete = "clearAll" }))
+        {
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100" style="border-top: 5px solid #ffc107;">
+                        <div class="card-header bg-dark text-white">
+                            <h4 class="mb-0">📋 Project Details</h4>
+                        </div>
+                        <div class="card-body bg-light">
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.ProjectName, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.ProjectName, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.ProjectName, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.StartDate, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.StartDate, new { @class = "form-control", type = "date" })
+                                    @Html.ValidationMessageFor(x => x.StartDate, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.EstimateEndDate, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.EstimateEndDate, new { @class = "form-control", type = "date" })
+                                    @Html.ValidationMessageFor(x => x.EstimateEndDate, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @*changed the label to Budget without changing any Backend Code*@
+                                @Html.LabelFor(x => x.EstimatedDays, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                @*<div class="col-form-label fw-bold col-4">Budget</div>*@
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.EstimatedDays, new { @class = "form-control", type = "number" })
+                                    @Html.ValidationMessageFor(x => x.EstimatedDays, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.ProjectDocumentFile, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.ProjectDocumentFile, new { @class = "form-control", type = "file" })
+                                    <small class="text-muted">Upload site permits or blueprints.</small><br />
+                                    @Html.ValidationMessageFor(x => x.ProjectDocumentFile, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.WorkInProgress, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8 d-flex align-items-center">
+                                    <div class="form-check form-switch fs-5">
+                                        @Html.CheckBoxFor(x => x.WorkInProgress, new { @class = "form-check-input" })
+                                    </div>
+                                    @Html.ValidationMessageFor(x => x.WorkInProgress, "", new { @class = "text-danger small ms-2" })
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-between align-items-center">
+
+                                    <a href="@Url.Action("Index", "Projects")" class="btn btn-outline-secondary fw-bold">⬅️ Cancel</a>
+                                    <button type="submit" class="btn btn-warning fw-bold text-dark btn-lg px-4">🏢 Save Project</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100" style="border-top: 5px solid #343a40;">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0 text-dark">🚜 Assign Equipment</h4>
+                            <a class="btn btn-dark btn-sm fw-bold" href="#" id="btnPlus">➕ Add Machinery</a>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-4">Select the heavy machinery required for this site. You can add multiple assets.</p>
+
+                            <div id="equipmentContainer">
+                                @Html.Action("AddNewEquipment", "Projects")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div id="msg"></div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Essential for allowing file uploads via Ajax.BeginForm
+            $("#form0").attr("enctype", "multipart/form-data");
+        });
+
+        function clearAll() {
+            // 1. Reset the main form fields
+            $("#form0").trigger("reset");
+
+            // 2. Clear out all the dynamically added equipment dropdowns
+            //    and replace them with a fresh, single dropdown via AJAX
+            $.ajax({
+                url: "/Projects/AddNewEquipment",
+                type: "GET",
+                success: function (data) {
+                    $("#equipmentContainer").html(data); // .html() overwrites the existing content
+                }
+            });
+        }
+
+        // Note: The logic for "#btnPlus" and "#btnDelete" is handled globally
+        // in your _Layout.cshtml, so you don't need to rewrite it here!
+    </script>
+}

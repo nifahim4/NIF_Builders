@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ConstructionDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Equipments">
+    <Key>
+      <PropertyRef Name="EquipmentID" />
+    </Key>
+    <Property Name="EquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EquipmentName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectEquipments">
+    <Key>
+      <PropertyRef Name="ProjectEquipmentID" />
+    </Key>
+    <Property Name="ProjectEquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectID" Type="int" Nullable="false" />
+    <Property Name="EquipmentID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Projects">
+    <Key>
+      <PropertyRef Name="ProjectID" />
+    </Key>
+    <Property Name="ProjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="StartDate" Type="date" Nullable="false" />
+    <Property Name="EstimateEndDate" Type="date" Nullable="false" />
+    <Property Name="EstimatedDays" Type="int" Nullable="false" />
+    <Property Name="ProjectDocuments" Type="nvarchar(max)" />
+    <Property Name="WorkInProgress" Type="bit" />
+  </EntityType>
+  <Association Name="FK__ProjectEq__Equip__4F7CD00D">
+    <End Role="Equipments" Type="Self.Equipments" Multiplicity="1" />
+    <End Role="ProjectEquipments" Type="Self.ProjectEquipments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Equipments">
+        <PropertyRef Name="EquipmentID" />
+      </Principal>
+      <Dependent Role="ProjectEquipments">
+        <PropertyRef Name="EquipmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectEq__Proje__4E88ABD4">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectEquipments" Type="Self.ProjectEquipments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="ProjectID" />
+      </Principal>
+      <Dependent Role="ProjectEquipments">
+        <PropertyRef Name="ProjectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ConstructionDBModelStoreContainer">
+    <EntitySet Name="Equipments" EntityType="Self.Equipments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectEquipments" EntityType="Self.ProjectEquipments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__ProjectEq__Equip__4F7CD00D" Association="Self.FK__ProjectEq__Equip__4F7CD00D">
+      <End Role="Equipments" EntitySet="Equipments" />
+      <End Role="ProjectEquipments" EntitySet="ProjectEquipments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectEq__Proje__4E88ABD4" Association="Self.FK__ProjectEq__Proje__4E88ABD4">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectEquipments" EntitySet="ProjectEquipments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

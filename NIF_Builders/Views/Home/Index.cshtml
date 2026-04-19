@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+<main>
+    <div class="d-flex justify-content-center mb-4 mt-2">
+        <div id="nifCarousel" class="carousel slide shadow rounded" data-bs-ride="carousel" style="width: 750px; height: 450px; overflow: hidden; border: 4px solid #343a40;">
+            @*<div class="carousel-indicators">
+                <button type="button" data-bs-target="#nifCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#nifCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#nifCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>*@
+            <div class="carousel-inner" style="height: 100%;">
+                <div class="carousel-item active" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/excavator-construction.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 1">
+                </div>
+                <div class="carousel-item" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/compactor-construction.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 2">
+                </div>
+                <div class="carousel-item" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/bulldozer-construction.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 3">
+                </div>
+                <div class="carousel-item" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/construction-crane.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 4">
+                </div>
+                <div class="carousel-item" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/dragline-construction.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 5">
+                </div>
+                <div class="carousel-item" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/construction-equipment.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 6">
+                </div>
+                <div class="carousel-item" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/dump-truck-construction.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 7">
+                </div>
+                <div class="carousel-item" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/fron-end-loader.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 8">
+                </div>
+                <div class="carousel-item" style="height: 100%;" data-bs-interval="3000">
+                    <img src="@Url.Content("~/Content/Images/dragline-construction.jpg")" class="d-block w-100" style="object-fit: cover; height: 100%;" alt="Construction Site 9">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#nifCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#nifCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <section class="row py-5 mb-4 bg-light rounded" aria-labelledby="nifTitle" style="border-left: 5px solid #ffc107;">
+        <div class="col-12 px-4">
+            <h1 id="nifTitle" class="display-4 fw-bold">NIF Builders Portal</h1>
+            <p class="lead">Your centralized command center for managing active construction projects, tracking estimated completion dates, and deploying heavy equipment across all job sites.</p>
+            <p><a href="@Url.Action("Index", "Projects")" class="btn btn-warning btn-lg fw-bold text-dark">View Active Projects &raquo;</a></p>
+        </div>
+    </section>
+
+    <div class="row pt-2">
+        <section class="col-md-4 mb-4" aria-labelledby="projectsTitle">
+            <h2 id="projectsTitle">🏗️ Project Management</h2>
+            <p>
+                Keep your builds on schedule. Track start dates, estimated completion days, and upload essential project documents. Toggle the "Work in Progress" status to keep stakeholders updated.
+            </p>
+            <p><a class="btn btn-outline-dark" href="@Url.Action("Create", "Projects")">Add New Project &raquo;</a></p>
+        </section>
+
+        <section class="col-md-4 mb-4" aria-labelledby="equipmentTitle">
+            <h2 id="equipmentTitle">🚜 Equipment Fleet</h2>
+            <p>
+                Maintain total visibility of your heavy machinery. Register new bulldozers, cranes, and excavators, and dynamically assign them to specific job sites using our Master-Details allocation system.
+            </p>
+            <p><a class="btn btn-outline-dark" href="@Url.Action("Index", "Equipments")">Manage Equipment &raquo;</a></p>
+        </section>
+
+        <section class="col-md-4 mb-4" aria-labelledby="safetyTitle">
+            <h2 id="safetyTitle">👷 Safety & Compliance</h2>
+            <p>
+                At NIF Builders, safety is our foundation. Ensure all uploaded site documents include the latest compliance checks, permits, and daily safety logs before breaking ground.
+            </p>
+            <p><a class="btn btn-outline-dark" href="@Url.Action("About", "Home")">Read Safety Guidelines &raquo;</a></p>
+        </section>
+    </div>
+</main>

@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - NIF Builders</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        .navbar-brand {
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffc107 !important; 
+        }
+        body {
+            border-top: 5px solid #ffc107;
+        }
+
+        footer {
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .pagination .active .page-link {
+            background-color: #ffc107 !important;
+            border-color: #ffc107 !important;
+            color: #343a40 !important; 
+        }
+
+        .pagination .page-link:hover {
+            background-color: #343a40 !important; 
+            border-color: #343a40 !important;
+            color: #ffc107 !important; 
+        }
+
+        .pagination .page-link {
+            border-color: #dee2e6; 
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                🏗️ NIF BUILDERS
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("Dashboard", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Project Management", "Index", "Projects", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Equipment Fleet", "Index", "Equipments", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("About Us", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content mt-4">
+        @RenderBody()
+        <hr class="mt-5" />
+        <footer>
+            <div class="d-flex justify-content-between align-items-center">
+                <p>&copy; @DateTime.Now.Year - NIF Builders Project & Equipment Management System</p>
+                <p>Safety First.</p>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $("#btnPlus").click(function (e) {
+                e.preventDefault();
+                var equipmentCntr = $("#equipmentContainer");
+
+                $.ajax({
+                    url: "/Projects/AddNewEquipment",
+                    type: "GET",
+                    success: function (data) {
+                        equipmentCntr.append(data);
+                    },
+                    error: function () {
+                        alert("Error loading the equipment list. Please try again.");
+                    }
+                });
+            });
+            $(document).on("click", "#btnDelete", function (e) {
+                e.preventDefault();
+                $(this).parent().parent().remove();
+            });
+        });
+    </script>
+</body>
+</html>

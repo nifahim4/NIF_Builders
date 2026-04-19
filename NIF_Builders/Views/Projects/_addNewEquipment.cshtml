@@ -1,0 +1,16 @@
+﻿@model NIF_Builders.Models.Equipment
+
+<div class="row mb-2 equipment-row align-items-center bg-white p-2 border rounded shadow-sm mx-1">
+    <div class="col-10 px-1">
+        <div class="input-group input-group-sm">
+            <span class="input-group-text bg-warning text-dark border-warning" title="Machinery Asset">🚜</span>
+
+            @Html.DropDownListFor(x => x.EquipmentID, ViewBag.equipments as SelectList, "-- Select Machinery --", htmlAttributes: new { @class = "form-select border-warning shadow-none fw-bold text-secondary" })
+        </div>
+    </div>
+    <div class="col-2 px-1 text-center">
+        <a href="#" id="btnDelete" class="btn btn-outline-danger btn-sm w-100 fw-bold" title="Remove this equipment">
+            ❌
+        </a>
+    </div>
+</div>

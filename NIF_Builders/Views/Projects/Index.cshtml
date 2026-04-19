@@ -1,0 +1,117 @@
+﻿@model IEnumerable<NIF_Builders.Models.Project>
+@{
+    ViewBag.Title = "Project Fleet Management";
+}
+@using PagedList
+@using PagedList.Mvc
+<div class="row mt-4">
+    <div class="col">
+        <h2 class="display-4 fw-bold">🏗️ Project List</h2>
+        <div class="d-flex justify-content-between align-items-end mb-3 border-bottom pb-2">
+            <p class="text-muted mb-0">Manage your active build sites and equipment allocations.</p>
+            <a class="btn btn-warning fw-bold text-dark" href="@Url.Action("Create", "Projects")">
+                ➕ Add New Project
+            </a>
+        </div>
+
+        <div>
+            @foreach (var project in Model)
+            {
+                <div class="card mb-4 shadow-sm" style="border-top: 4px solid #343a40;">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center flex-wrap gap-3">
+                            @if (!string.IsNullOrEmpty(project.ProjectDocuments))
+                            {
+                                <img src="@project.ProjectDocuments" width="40" height="40" style="border-radius:5px; object-fit: cover; border: 1px solid #ccc;" alt="Doc" title="Site Document Attached" />
+                            }
+                            else
+                            {
+                                <div style="width: 40px; height: 40px; border-radius: 5px; background-color: #e9ecef; border: 1px dashed #ccc; display:flex; justify-content:center; align-items:center;" title="No Document">
+                                    📄
+                                </div>
+                            }
+
+                            <div class="ms-2">
+                                <span class="d-block" style="font-size: 1.1rem;"><b>@Html.DisplayFor(x => project.ProjectName)</b></span>
+                                <small class="text-muted">
+                                    <b>Start:</b> @project.StartDate.ToString("MMM dd, yyyy") |
+                                    <b>Est. End:</b> @project.EstimateEndDate.ToString("MMM dd, yyyy") |
+                                    <b>Budget:</b> @Html.DisplayFor(x => project.EstimatedDays) Taka@*Duration: Something Days*@
+                                </small>
+                            </div>
+
+                            <div class="ms-3">
+                                @if (project.WorkInProgress)
+                                {
+                                    <span class="badge bg-success text-white px-2 py-1">Active Site</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary text-white px-2 py-1">On Hold / Completed</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-outline-dark btn-sm me-2 fw-bold" href="@Url.Action("Edit", "Projects", new { id = project.ProjectID })">✏️ Edit</a>
+                            <a class="btn btn-danger btn-sm fw-bold" href="@Url.Action("Delete", "Projects", new { id = project.ProjectID })">🗑️ Delete</a>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        @if (project.ProjectEquipments != null && project.ProjectEquipments.Any())
+                        {
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead style="background-color: #ffc107; color: #343a40;">
+                                    <tr>
+                                        <th class="ps-4" style="width: 20%;">Equipment ID</th>
+                                        <th>Assigned Machinery</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in project.ProjectEquipments)
+                                    {
+                                        <tr>
+                                            <td class="ps-4 fw-bold text-muted">#@Html.DisplayFor(x => item.Equipment.EquipmentID)</td>
+                                            <td>🚜 @Html.DisplayFor(x => item.Equipment.EquipmentName)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="p-3 text-center text-muted bg-white">
+                                <em>No equipment currently assigned to this project site.</em>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    @*<div class="d-flex justify-content-end">
+            @Html.PagedListPager(Model as IPagedList, page => Url.Action("Index", new { page = page }))
+        </div>*@
+    <div class="d-flex justify-content-end mt-4 mb-2">
+        @Html.PagedListPager(Model as IPagedList, page => Url.Action("Index", new { page = page }),
+            new PagedListRenderOptions
+            {
+                UlElementClasses = new[] { "pagination", "shadow-sm" },
+                LiElementClasses = new[] { "page-item" },
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                LinkToPreviousPageFormat = "⬅️ Prev",
+                LinkToNextPageFormat = "Next ➡️"
+            }
+        )
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('.pagination li a, .pagination li span').addClass('page-link fw-bold text-dark');
+        });
+    </script>
+}

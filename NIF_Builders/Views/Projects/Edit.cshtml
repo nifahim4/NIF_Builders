@@ -1,0 +1,152 @@
+﻿@model NIF_Builders.Models.ViewModels.ProjectVM
+@{
+    ViewBag.Title = "Edit Project";
+}
+
+<div class="row mt-4">
+    <div class="col-12 text-center mb-4">
+        <h2 class="display-5 fw-bold">✏️ Edit Project</h2>
+        <p class="text-muted">Update construction site details and modify machinery allocations.</p>
+    </div>
+
+    <div class="col-12">
+        @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "msg", OnComplete = "onEditComplete" }))
+        {
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100" style="border-top: 5px solid #ffc107;">
+                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">📋 Project Details</h4>
+                            <span class="badge bg-warning text-dark border border-dark">Project #@Model.ProjectID</span>
+                        </div>
+                        <div class="card-body bg-light">
+
+                            @Html.HiddenFor(x => x.ProjectID)
+                            @Html.HiddenFor(x => x.ProjectDocuments)
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.ProjectName, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.ProjectName, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.ProjectName, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.StartDate, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                    @Html.ValidationMessageFor(x => x.StartDate, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.EstimateEndDate, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.EstimateEndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                    @Html.ValidationMessageFor(x => x.EstimateEndDate, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.EstimatedDays, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.EstimatedDays, new { @class = "form-control", type = "number" })
+                                    @Html.ValidationMessageFor(x => x.EstimatedDays, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.ProjectDocumentFile, "Update Document", htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8">
+                                    @Html.TextBoxFor(x => x.ProjectDocumentFile, new { @class = "form-control mb-2", type = "file" })
+
+                                    @if (!string.IsNullOrEmpty(Model.ProjectDocuments))
+                                    {
+                                        <div class="p-2 border rounded bg-white d-flex align-items-center">
+                                            <img src="@Model.ProjectDocuments" width="40" height="40" style="border-radius:4px; object-fit: cover; border: 1px solid #ccc;" alt="Current Doc" />
+                                            <div class="ms-2">
+                                                <small class="text-success fw-bold d-block">Current file attached</small>
+                                                <small class="text-muted" style="font-size: 0.75rem;">Uploading a new file will overwrite this.</small>
+                                            </div>
+                                        </div>
+                                    }
+                                    @Html.ValidationMessageFor(x => x.ProjectDocumentFile, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                @Html.LabelFor(x => x.WorkInProgress, htmlAttributes: new { @class = "col-form-label fw-bold col-4" })
+                                <div class="col-8 d-flex align-items-center">
+                                    <div class="form-check form-switch fs-5">
+                                        @Html.CheckBoxFor(x => x.WorkInProgress, new { @class = "form-check-input" })
+                                    </div>
+                                    @Html.ValidationMessageFor(x => x.WorkInProgress, "", new { @class = "text-danger small ms-2" })
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-between align-items-center">
+                                    <a href="@Url.Action("Index", "Projects")" class="btn btn-outline-secondary fw-bold">⬅️ Cancel</a>
+                                    <button type="submit" class="btn btn-warning fw-bold text-dark px-4 border-dark">💾 Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100" style="border-top: 5px solid #343a40;">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0 text-dark">🚜 Assigned Equipment</h4>
+                            <a class="btn btn-dark btn-sm fw-bold" href="#" id="btnPlus">➕ Add Machinery</a>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-4">Modify the machinery assigned to this site. You can add new assets or remove existing ones.</p>
+
+                            <div id="equipmentContainer">
+                                @if (Model.EquipmentList != null && Model.EquipmentList.Any())
+                                {
+                                    foreach (var item in Model.EquipmentList)
+                                    {
+                                        @Html.Action("AddNewEquipment", "Projects", new { id = item })
+                                    }
+                                }
+                                else
+                                {
+                                    <div id="noEqAlert" class="alert alert-secondary text-center small">No machinery currently assigned.</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div id="msg"></div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#form0").attr("enctype", "multipart/form-data");
+
+            $("#btnPlus").click(function () {
+                $("#noEqAlert").remove();
+            });
+        });
+
+        function onEditComplete() {
+            $('html, body').animate({
+                scrollTop: $("#msg").offset().top - 100
+            }, 500);
+        }
+    </script>
+}

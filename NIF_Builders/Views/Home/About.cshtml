@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "About NIF Builders";
+}
+<main aria-labelledby="title" class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center mb-5">
+            <h2 id="title" class="display-4 fw-bold">@ViewBag.Title</h2>
+            <h3 class="text-muted fs-4">@ViewBag.Message</h3>
+            <div style="height: 4px; width: 80px; background-color: #ffc107; margin: 20px auto;"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm" style="border-top: 4px solid #ffc107;">
+                <div class="card-body">
+                    <h4 class="card-title">🏗️ Our Mission</h4>
+                    <p class="card-text mt-3">
+                        At NIF Builders, we are dedicated to delivering high-quality construction projects on time and within budget. From complex commercial infrastructure to foundational site developments, we lay the groundwork for a stronger tomorrow.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm" style="border-top: 4px solid #343a40;">
+                <div class="card-body">
+                    <h4 class="card-title">👷 Safety First</h4>
+                    <p class="card-text mt-3">
+                        Safety isn't just a policy; it is our core foundation. We maintain rigorous compliance with all industry regulations and ensure every job site operates under the highest safety protocols to protect our crew, clients, and communities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 p-4 bg-light rounded">
+        <div class="col-12 text-center">
+            <h4>Technology & Equipment</h4>
+            <p class="lead mt-3 mb-4" style="max-width: 800px; margin: 0 auto;">
+                To achieve excellence, you need the right tools. Our custom-built management portal allows us to meticulously track, maintain, and deploy our heavy machinery—ensuring the exact equipment needed is always assigned to the right project.
+            </p>
+            <a href="@Url.Action("Contact", "Home")" class="btn btn-dark btn-lg px-5">Contact Our Team</a>
+        </div>
+    </div>
+</main>
