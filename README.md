@@ -1,0 +1,1 @@
+NIF_Builders using Database first Approach Master Detail CRUD — ASP.NET ASP.NET MVC 5· SQL Server · Visual Studio 2026 Heavy Construction Equipment Management of a Construction Project with full CRUD master-detail operations demonstrating ASP.NET Core architecture.
